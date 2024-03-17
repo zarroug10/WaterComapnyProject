@@ -1,0 +1,157 @@
+<div class="page-wrapper">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="mt-5">
+      <div class="mb-3">
+  <h2>Search Users</h2>
+  <div class="row g-3">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Username" [(ngModel)]="searchParams.username" name="username">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Telephone" [(ngModel)]="searchParams.tel" name="telephone">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="CIN" [(ngModel)]="searchParams.cin" name="cin">
+    </div>
+    <div class="col">
+      <select type="text"  class="form-select" [(ngModel)]="searchParams.location" name="location">
+        <option value="">Select Location</option>
+        <option value="nafta">Nafta</option>
+        <option value="Zawya">Zaway</option>
+        <option value="tunis">Tunis</option>
+      </select>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary w-100" (click)="searchUsers()">Search</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-success" (click)="openAddEmployeeModal()">Add New Employee</button>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Users</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Location</th>
+            <th>CIN</th>
+            <th>Telephone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.location }}</td>
+            <td>{{ user.cin }}</td>
+            <td>{{ user.tel }}</td>
+            <td>
+              <button type="button" class="btn btn-danger mr-1" (click)="openModal(user.id)" data-target="#confirmFireModal">
+                Fire
+              </button>
+              &nbsp;&nbsp;&nbsp;
+              <button type="button" class="btn btn-primary" (click)="openUpdateModal(user)">Update</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Delete Model -->
+<div #myModal id="myModal" class="modal">
+  <div class="modal-content">
+    <span #close class="close" (click)="closeModal()">&times;</span>
+    <h2>Are you sure you want to Fire this Employee?</h2>
+    <form>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+      <button class="btn btn-secondary" type="button" (click)="closeModal()">Cancel</button>
+      &nbsp;&nbsp;&nbsp;
+      <button class="btn btn-danger" type="button" (click)="fireUser()" *ngIf="fireUserId">Fire</button>
+    </form>
+  </div>
+</div>
+<!-- Delete Model -->
+
+<!-- Update Model -->
+<div #updateModal id="updateModal" class="Updatemodal">
+  <div class="modal-content">
+    <span #closeUpdate class="close" (click)="closeUpdateModal()">&times;</span>
+    <h2>Update Employee</h2>
+    <form>
+      <div class="mb-3">
+        <label for="updateUsername" class="form-label">Username</label>
+        <input type="text" class="form-control" id="updateUsername" [(ngModel)]="updatedUser.username" name="updateUsername">
+      </div>
+      <div class="mb-3">
+        <label for="updateEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="updateEmail" [(ngModel)]="updatedUser.email" name="updateEmail">
+      </div>
+      <div class="mb-3">
+        <label for="updateLocation" class="form-label">Location</label>
+        <input type="text" class="form-control" id="updateLocation" [(ngModel)]="updatedUser.location" name="updateLocation">
+      </div>
+      <div class="mb-3">
+        <label for="updateCIN" class="form-label">CIN</label>
+        <input type="text" class="form-control" id="updateCIN" [(ngModel)]="updatedUser.cin" name="updateCIN">
+      </div>
+      <div class="mb-3">
+        <label for="updateTel" class="form-label">Telephone</label>
+        <input type="text" class="form-control" id="updateTel" [(ngModel)]="updatedUser.tel" name="updateTel">
+      </div>
+      <button class="btn btn-primary" type="button" (click)="updateUser()">Update</button>
+    </form>
+  </div>
+</div>
+<!-- Update Model -->
+<!-- Add Employee Modal -->
+<div #addEmployeeModal id="addEmployeeModal" class="addEmployeeModal">
+  <div class="modal-content">
+    <span #closeAddEmployee class="close" (click)="closeAddEmployeeModal()">&times;</span>
+    <h2>Add New Employee</h2>
+    <form>
+      <div class="mb-3">
+        <label for="newUsername" class="form-label">Username</label>
+        <input type="text" class="form-control" id="newUsername" [(ngModel)]="newUser.username" name="newUsername">
+      </div>
+      <div class="mb-3">
+        <label for="newEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="newEmail" [(ngModel)]="newUser.email" name="newEmail">
+      </div>
+      <div class="mb-3">
+        <label for="newLocation" class="form-label">Location</label>
+        <input type="text" class="form-control" id="newLocation" [(ngModel)]="newUser.location" name="newLocation">
+      </div>
+      <div class="mb-3">
+        <label for="newCIN" class="form-label">CIN</label>
+        <input type="text" class="form-control" id="newCIN" [(ngModel)]="newUser.cin" name="newCIN">
+      </div>
+      <div class="mb-3">
+        <label for="newTel" class="form-label">Telephone</label>
+        <input type="text" class="form-control" id="newTel" [(ngModel)]="newUser.tel" name="newTel">
+      </div>
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="newPassword" [(ngModel)]="newUser.password" name="newPassword">
+      </div>
+      <button class="btn btn-primary" type="button" (click)="signup()">Add Employee</button>
+    </form>
+  </div>
+</div>
+<!-- Add Employee Modal -->
+
+<div class="toast-container" id="toast-container"></div>
+
+

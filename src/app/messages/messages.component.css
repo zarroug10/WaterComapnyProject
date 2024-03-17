@@ -1,0 +1,79 @@
+.accordion-item {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.accordion-button {
+  background-color: #f4f4f4;
+  color: #333;
+  cursor: pointer;
+  padding: 10px;
+  width: 80%;
+  text-align: left;
+  border: none;
+  outline: none;
+}
+
+.accordion-content {
+  display: none;
+  padding: 10px;
+}
+
+.show {
+  display: block;
+}
+/* Modal styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  background-color: #fefefe;
+  border: 1px solid #888;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.modal-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #aaa;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-title {
+  text-align: center; /* Center the title text */
+}
+
+.assign-assignedButton {
+  align-self: flex-end;
+  margin-top: 30px;
+  margin-left: 90%;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+.page-wrapper {
+  height: 90vh; /* Set the height of the page wrapper to 100% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}

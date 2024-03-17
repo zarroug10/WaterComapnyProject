@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #17BCE8;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.navbar-brand {
+  text-decoration: none;
+  color: #fff;
+  font-size: 24px; /* Adjust the font size to make the logo bigger */
+}
+
+.navbar-brand i {
+  margin-right: 5px;
+  font-size: 28px; /* Adjust the font size of the icon */
+}

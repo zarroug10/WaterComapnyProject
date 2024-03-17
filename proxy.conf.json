@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://api.geoapify.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

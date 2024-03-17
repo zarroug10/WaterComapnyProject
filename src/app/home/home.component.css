@@ -1,0 +1,30 @@
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Background image */
+.card {
+  background-image: url('../../assets/img/images.jpg');
+  background-size: cover;
+  background-position: center;
+  font-weight: bold;
+}
+
+.sec{
+  display: grid;
+}
+
+.container-fluid{
+padding-left: 5%;
+
+}
+.table-wrapper {
+  max-height: 300px; /* Set the max height of the scrollable area */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds max height */
+}
+
+.page-wrapper {
+  height: 90vh; /* Set the height of the page wrapper to 100% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}

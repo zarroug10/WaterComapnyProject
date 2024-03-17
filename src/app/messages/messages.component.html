@@ -1,0 +1,81 @@
+<div class="page-wrapper">
+<div class="container mt-5">
+  <!-- Incident Reports Section -->
+  <div class="row mb-5 justify-content-center">
+    <div class="col-lg-5 border-end pe-4">
+      <h2 class="mb-4">Incident Reports</h2>
+      <div class="mt-4">
+        <div class="mb-3">
+          <div class="accordion-item" *ngFor="let incident of incidents">
+            <button class="accordion-button" (click)="toggleAccordion($event)">
+              <div class="row align-items-center">
+                <div class="col-9">
+                  <h4>{{ incident.title }} Reported at</h4>
+                  <p class="mb-0">{{ incident.created_at }}</p>
+                </div>
+                <div class="col-3">
+                  <button #assignButton id="assignButton" class="btn btn-primary" (click)="openModal()"><strong>Assign</strong></button>
+                </div>
+              </div>
+            </button>
+            <div class="accordion-content mt-3">
+              <p>{{ incident.description }}</p>
+              <p>{{ incident.location }}</p>
+              <!-- Display media -->
+              <div *ngIf="incident.media">
+                <img *ngIf="isImage(incident.media)" [src]="getMediaUrl(incident.media)" alt="Incident Media" style="width: 80%;">
+                <video *ngIf="isVideo(incident.media)" controls style="width: 80%;">
+                  <source [src]="getMediaUrl(incident.media)" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 ps-4">
+      <!-- Repair Reports Section -->
+      <h2 class="mb-4">Repair Reports</h2>
+      <div class="accordion mt-4" id="repairAccordion">
+        <div class="accordion-item" *ngFor="let report of repairReports">
+          <button class="accordion-button" type="button" (click)="toggleAccordion($event)">
+            <div class="row align-items-center">
+              <div class="col">
+                <h4>Repair Report by <strong>{{ report.username }}</strong> - {{ report.created_at }}</h4>
+              </div>
+            </div>
+          </button>
+          <div class="accordion-content mt-3">
+            <p>Description: {{ report.description }}</p>
+            <p>Duration: {{ report.duration }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- The modal -->
+<div #myModal id="myModal" class="modal">
+  <div class="modal-content">
+    <span #close class="close" (click)="closeModal()">&times;</span>
+    <h2>Assign Task</h2>
+    <form (submit)="assignTask()">
+      <label for="assignee">Assign:</label>
+      <select type="text" class="form-select" id="assignee" name="assignee" [(ngModel)]="assignee">
+        <option value="">Select a Team</option>
+        <option value="Team 1">Team 1</option>
+        <option value="Team 2">Team 2</option>
+        <option value="Team 3">Team 3</option>
+        <option value="Team 4">Team 4</option>
+        <option value="Team 5">Team 5</option>
+      </select>
+      <span class="col-md-2"></span>
+      <button class="btn btn-primary" id="assignedButton" type="submit">Assign</button>
+    </form>
+  </div>
+</div>
+
+

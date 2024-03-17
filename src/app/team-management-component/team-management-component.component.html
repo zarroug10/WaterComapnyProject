@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>Technicians</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Location</th>
+        <th>Telephone</th>
+        <th>CIN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let technician of technicians">
+        <td>{{ technician.id }}</td>
+        <td>{{ technician.username }}</td>
+        <td>{{ technician.email }}</td>
+        <td>{{ technician.location }}</td>
+        <td>{{ technician.tel }}</td>
+        <td>{{ technician.cin }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Form for adding technicians to a team -->
+  <h2>Add Technicians to Team</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="teamName">Team Name:</label>
+      <input type="text" class="form-control" id="teamName" name="teamName" [(ngModel)]="teamName">
+    </div>
+    <div class="form-group">
+      <label for="selectedTechnicians">Select Technicians:</label>
+      <select multiple class="form-control" id="selectedTechnicians" name="selectedTechnicians" [(ngModel)]="selectedTechnicians">
+        <option *ngFor="let technician of technicians" [value]="technician.id">{{ technician.username }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Technicians</button>
+  </form>
+</div>

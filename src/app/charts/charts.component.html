@@ -1,0 +1,11 @@
+<div *ngIf="chartData">
+  <ngx-charts-pie-chart
+    [results]="chartData"
+    [view]="[500, 300]"
+    [legend]="true"
+    [labels]="true"
+    [explodeSlices]="false"
+    [animations]="true"
+  >
+  </ngx-charts-pie-chart>
+</div>

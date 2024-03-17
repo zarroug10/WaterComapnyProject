@@ -1,0 +1,79 @@
+/* Global styles */
+body {
+  background-color: #f1f1f1;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.navbar {
+  background-color: #17BCE8;
+  color: white;
+  padding: 10px;
+}
+
+/* Sidebar styles */
+.slidebar {
+  width: 13%;
+  float: left;
+  background-color: #111;
+  overflow-y: auto;
+  height: 120mv;
+}
+
+.slidebar ul {
+  position: relative;
+  height: 100%; /* Set sidebar content height to 100% of sidebar height */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.slidebar a {
+  color: #bbb;
+  text-decoration: none;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  display: block;
+  padding: 20px;
+}
+
+.slidebar li {
+  text-align: center;
+}
+
+.slidebar i {
+  display: block;
+  text-align: center;
+  color: #B3B3B3;
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.slidebar li:hover a,
+.slidebar a.active {
+  background-color: #313131;
+  color: #17BCE8;
+}
+
+.slidebar li:hover i,
+.slidebar a.active i {
+  color: #17BCE8;
+}
+
+
+/* Main content styles */
+.main {
+  flex: 1; /* Take up remaining space */
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  padding-top: 60px; /* Adjust according to navbar height */
+}
+
+.main h2 {
+  margin: 1em 30px;
+  color: #17BCE8;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #bbb;
+  padding: 0px 0px 20px 0px;
+}

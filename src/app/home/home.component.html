@@ -1,0 +1,83 @@
+<div class="page-wrapper">
+<div class="row mb-5"></div>
+<div class="container-fluid">
+  <!-- Analytics Cards Section -->
+  <section>
+    <div class="row mb-5 justify-content-center">
+      <div class="col-md-2" *ngFor="let analytics of locationAnalytics">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><h4><strong>{{ analytics.location }}</strong></h4></h5>
+            <p class="card-text">{{ analytics.percentageOfTotal }}%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="sec">
+  <div class="row  mb-5" style="height: 50%;">
+    <!-- Dashboard Charts Section -->
+    <div class="col-md-6">
+   <app-my-map></app-my-map>
+      </div>
+    <div class="col-md-6">
+      <div>
+       <app-charts></app-charts>
+      </div>
+    </div>
+  </div>
+  <!-- Last Interactions Section -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="table-wrapper">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Location</th>
+                <th scope="col">User Type</th>
+                <th scope="col">Telephone</th>
+                <th scope="col">CIN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.username }}</td>
+                <td>{{ user.location }}</td>
+                <td>{{ user.userType }}</td>
+                <td>{{ user.tel }}</td>
+                <td>{{ user.cin }}</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+        </div>
+    <div class="col-md-1"></div>
+  <!-- Clients Feedback Section -->
+    <div class="col-md-4">
+      <div class="row">
+        <table class="table table-hover">
+          <caption>feedbacks</caption>
+          <thead>
+            <tr>
+              <th scope="col">Client</th>
+              <th scope="col">Message</th>
+              <th scope="col">incidentTitle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let feedback of feedbacks">
+              <td>{{feedback.username}}</td>
+              <td>{{feedback.message}}</td>
+              <td>{{feedback.incidentTitle}}</td>
+            </tr>
+          </tbody>
+              </table>
+      </div>
+      <!-- Repeat for other Client Feedback -->
+    </div>
+  </div>
+</section>
+</div>
+</div>
