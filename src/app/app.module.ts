@@ -52,7 +52,7 @@ import { LocationChartComponent } from './location-chart/location-chart.componen
     BrowserAnimationsModule,
     NgxChartsModule,
     ToastrModule.forRoot({
-      positionClass:'md-toast-bottom-right',
+      positionClass:'toast-top-right',
       toastClass: 'ngx-toastr',  }),
   ],
   providers: [

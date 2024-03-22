@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent {
+  teams: any[] = [];
   incident: any = {
     title: '',
     description: '',
@@ -17,6 +18,12 @@ export class ReportComponent {
   };
 
   constructor(private http: HttpClient) { }
+  ngOnInit(): void {
+    this.getTeams();
+  }
+  getTeams() {
+    throw new Error('Method not implemented.');
+  }
 
   async submitIncident(): Promise<void> {
     try {

@@ -45,7 +45,7 @@ export class UsersComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching users:', error);
-        this.showToast('Error fetching users', 'error');
+        this.toastr.error('Error fetching users', 'error');
       }
     );
   }
@@ -87,7 +87,7 @@ export class UsersComponent implements OnInit {
         },
         (error) => {
             console.error('Error searching users:', error);
-            this.showToast('Error searching users', 'error');
+            this.toastr.error('Error searching users', 'error');
         }
     );
   }
@@ -108,13 +108,13 @@ export class UsersComponent implements OnInit {
 
     this.http.delete(`http://localhost:3000/auth/users/${this.fireUserId}`, { headers }).subscribe(
       () => {
-        this.showToast('User deleted successfully', 'success');
+        this.toastr.success('User deleted successfully', 'success');
         // Optionally, you can update the user list after deletion
         this.fetchUsers();
       },
       (error) => {
         console.error('Error deleting user:', error);
-        this.showToast('Error deleting user', 'error');
+        this.toastr.error('Error deleting user', 'error');
       }
     );
     // Close modal after deletion
@@ -147,13 +147,13 @@ export class UsersComponent implements OnInit {
 
     this.http.put(`http://localhost:3000/auth/users/${this.updatedUser.id}`, this.updatedUser, { headers }).subscribe(
       () => {
-        this.showToast('User updated successfully', 'success');
+        this.toastr.success('User updated successfully', 'success');
         // Optionally, you can update the user list after updating
         this.fetchUsers();
       },
       (error) => {
         console.error('Error updating user:', error);
-        this.showToast('Error updating user', 'error');
+        this.toastr.error('Error updating user', 'error');
       }
     );
     // Close modal after update
@@ -181,13 +181,13 @@ export class UsersComponent implements OnInit {
 
     this.http.post('http://localhost:3000/auth/signup', this.newUser, { headers }).subscribe(
       (data) => {
-        this.showToast('Employee added successfully', 'success');
+        this.toastr.success('Employee added successfully', 'success');
         // Optionally, you can update the user list after adding
         this.fetchUsers();
       },
       (error) => {
         console.error('Error adding employee:', error);
-        this.showToast('Error adding employee', 'error');
+        this.toastr.error('Error adding employee', 'error');
       }
     );
     // Close modal after adding employee
