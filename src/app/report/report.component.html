@@ -29,3 +29,16 @@
     <button type="submit">Submit</button>
   </form>
 </div>
+
+
+<div>
+  <h2>Teams</h2>
+  <ul>
+    <li *ngFor="let team of teams">
+      <h3>{{ team.name }}</h3>
+      <ul>
+        <li *ngFor="let member of team.members">{{ member.username }}</li>
+      </ul>
+    </li>
+  </ul>
+</div>

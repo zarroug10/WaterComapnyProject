@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent {
-  teams: any[] = [];
+  teams: { name: string, members: { username: string }[] }[] = [];
   incident: any = {
     title: '',
     description: '',
@@ -21,8 +21,15 @@ export class ReportComponent {
   ngOnInit(): void {
     this.getTeams();
   }
-  getTeams() {
-    throw new Error('Method not implemented.');
+  getTeams(): void {
+    this.http.get<{ teams: { name: string, members: { username: string }[] }[] }>('http://localhost:3003/auth/Teams').subscribe({
+      next: (response) => {
+        this.teams = response.teams;
+      },
+      error: (error) => {
+        console.error('Error fetching teams:', error);
+      }
+    });
   }
 
   async submitIncident(): Promise<void> {

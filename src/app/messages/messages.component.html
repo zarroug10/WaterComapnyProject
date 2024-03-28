@@ -14,7 +14,7 @@
                   <p class="mb-0">{{ incident.created_at }}</p>
                 </div>
                 <div class="col-3">
-                  <button #assignButton id="assignButton" class="btn btn-primary" (click)="openModal()"><strong>Assign</strong></button>
+                  <button #assignButton id="assignButton" class="btn btn-primary" (click)="openModal(incident.id)"><strong>Assign</strong></button>
                 </div>
               </div>
             </button>
@@ -64,13 +64,9 @@
     <h2>Assign Task</h2>
     <form (submit)="assignTask()">
       <label for="assignee">Assign:</label>
-      <select type="text" class="form-select" id="assignee" name="assignee" [(ngModel)]="assignee">
+      <select class="form-select" id="assignee" name="assignee" [(ngModel)]="assignee" (change)="onTeamSelectionChange($event)">
         <option value="">Select a Team</option>
-        <option value="Team 1">Team 1</option>
-        <option value="Team 2">Team 2</option>
-        <option value="Team 3">Team 3</option>
-        <option value="Team 4">Team 4</option>
-        <option value="Team 5">Team 5</option>
+        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
       </select>
       <span class="col-md-2"></span>
       <button class="btn btn-primary" id="assignedButton" type="submit">Assign</button>

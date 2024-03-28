@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-messages',
@@ -10,8 +11,18 @@ export class MessagesComponent implements AfterViewInit {
   incidents: any[] = [];
   baseUrl = 'http://localhost:3001/uploads/';
   token: string = ''; // Variable to store JWT token
-  assignee: string = ''; // Assignee input value
+  assignee: number | null = null;
   repairReports: any[] = [];
+  teams: {id:string, name: string, members: { username: string }[] }[] = [];
+  selectedIncidentId: number | null = null; // Default value is null
+incident: any = {
+    title: '',
+    description: '',
+    location: '',
+    latitude: null,
+    longitude: null,
+    media: null // This will hold the selected media file
+  };
 
   @ViewChild('myModal') modal!: ElementRef;
 
@@ -20,10 +31,23 @@ export class MessagesComponent implements AfterViewInit {
   ngOnInit(): void {
     this.fetchIncidents();
     this.fetchRepairReports();
+    this.getTeams();
   }
 
   ngAfterViewInit(): void {
     this.initAccordion();
+  }
+
+  // Fetch teams from backend
+  getTeams(): void {
+    this.http.get<{ teams: { id:string,name: string, members: { username: string }[] }[] }>('http://localhost:3003/auth/Teams').subscribe({
+      next: (response) => {
+        this.teams = response.teams;
+      },
+      error: (error) => {
+        console.error('Error fetching teams:', error);
+      }
+    });
   }
 
   // Fetch incidents from backend
@@ -42,6 +66,7 @@ export class MessagesComponent implements AfterViewInit {
       }
     );
   }
+
   fetchRepairReports(): void {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}` // Include JWT token in request header
@@ -78,7 +103,6 @@ export class MessagesComponent implements AfterViewInit {
       );
     });
   }
-
 
   // Check if media is an image
   isImage(media: string): boolean {
@@ -121,19 +145,86 @@ export class MessagesComponent implements AfterViewInit {
     content.classList.toggle('show');
   }
 
-  openModal(): void {
+  openModal(incidentId: number): void {
+    // Assign the selected incident ID
+    this.selectedIncidentId = incidentId;
+
+    // Now, open the modal
     this.modal.nativeElement.style.display = 'block';
-  }
+    console.log("incidentId:",incidentId)
+}
 
   closeModal(): void {
     this.modal.nativeElement.style.display = 'none';
   }
+  fetchIncidentById(incidentId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+
+    return this.http.get<any>(`http://localhost:3001/incidents/${incidentId}`, { headers });
+  }
 
   assignTask(): void {
-    // Perform assignment logic here
-    console.log('Assigning task to:', this.assignee);
+    if (!this.assignee || this.selectedIncidentId === null) {
+        console.error('No team selected for assignment or no incident selected');
+        return;
+    }
+
+    const teamId = this.assignee;
+
+    console.log('Assigning task to team:', teamId, 'for incident ID:', this.selectedIncidentId);
+
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': 'application/json'
+    });
+
+    const body = { teamId };
+
+    this.http.post<any>('http://localhost:3001/assign-incident-to-team', body, { headers }).subscribe(
+        () => {
+            console.log('Incident assigned to team successfully');
+            // Optionally, display a success message or trigger any other action
+        },
+        (error) => {
+            console.error('Error assigning incident to team:', error);
+            // Handle error, display error message, etc.
+        }
+    );
 
     // Close modal after assignment
     this.closeModal();
+}
+
+fetchTeamById(teamId: number): Observable<any> {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.token}`
+  });
+
+  return this.http.get<any>(`http://localhost:3003/auth/Teams/${teamId}`, { headers });
+}
+
+onTeamSelectionChange(event: any): void {
+  const teamId = event.target.value;
+  if (teamId) {
+    const parsedTeamId = parseInt(teamId, 10);
+    if (!isNaN(parsedTeamId)) {
+      this.fetchTeamById(parsedTeamId).subscribe(
+        (data) => {
+          console.log('Team details:', data);
+        },
+        (error) => {
+          console.error('Error fetching team details:', error);
+        }
+      );
+    } else {
+      console.error('Invalid team ID:', teamId);
+    }
   }
+}
+
+
+
+
 }
