@@ -18,5 +18,10 @@ steps:
 - script: |
     npm install -g @angular/cli
     npm install
+    npm test
     ng build --prod
   displayName: 'npm install and build'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
