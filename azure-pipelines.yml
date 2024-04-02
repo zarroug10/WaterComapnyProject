@@ -1,14 +1,3 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
-trigger:
-- main
-
-pool:
-  vmImage: ubuntu-latest
-
 steps:
 - task: NodeTool@0
   inputs:
@@ -21,6 +10,12 @@ steps:
     npm test
     ng build --prod
   displayName: 'npm install and build'
+
+- script: |
+    npm install -g chromedriver
+    CHROME_BIN=/usr/bin/google-chrome npm test -- --no-sandbox --headless --disable-gpu --disable-software-rasterizer
+  displayName: 'Run tests with headless Chrome'
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
