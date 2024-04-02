@@ -21,12 +21,6 @@ steps:
     npm test
     ng build --prod
   displayName: 'npm install and build'
-
-- script: |
-    npm install -g chromedriver
-    CHROME_BIN=/usr/bin/google-chrome npm test -- --no-sandbox --headless --disable-gpu --disable-software-rasterizer
-  displayName: 'Run tests with headless Chrome'
-
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
