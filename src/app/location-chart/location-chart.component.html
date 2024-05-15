@@ -1,13 +1,14 @@
-<div style="display: block; margin-top: 20px;">
-  <ngx-charts-bar-vertical
-    [results]="chartData"
-    [xAxis]="true"
-    [yAxis]="true"
-    [legend]="true"
-    [showXAxisLabel]="true"
-    [showYAxisLabel]="true"
-    xAxisLabel="Location"
-    yAxisLabel="Incident Count"
-    [scheme]="colorScheme">
-  </ngx-charts-bar-vertical>
-</div>
+<div class="page-wrapper">
+  <div class="grid-container">
+    <!-- Highcharts chart (A) -->
+    <div class="grid-item">
+      <div id="overallAverageFeedbackChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+
+    <!-- ngx-charts-bar-vertical component (B) -->
+    <div class="grid-item">
+      <ngx-charts-bar-vertical [results]="chartData" [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
+        [showYAxisLabel]="true" xAxisLabel="Location" yAxisLabel="Incident Count" [scheme]="colorScheme">
+      </ngx-charts-bar-vertical>
+    </div>
+  </div>

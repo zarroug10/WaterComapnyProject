@@ -1,26 +1,36 @@
-<div class="settings-container">
-  <h2>Dashboard Settings</h2>
-
-  <div class="setting-item">
-    <label>Theme:</label>
-    <select [(ngModel)]="dashboardSettings.theme" (change)="updateTheme($event)">
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
-  </div>
-
-  <div class="setting-item">
-    <label>Notifications:</label>
-    <input type="checkbox" [(ngModel)]="dashboardSettings.notifications" (change)="toggleNotifications()">
-  </div>
-
-  <div class="setting-item">
-    <label>Show Grid:</label>
-    <input type="checkbox" [(ngModel)]="dashboardSettings.displayOptions.showGrid" (change)="toggleGrid()">
-  </div>
-
-  <div class="setting-item">
-    <label>Show Sidebar:</label>
-    <input type="checkbox" [(ngModel)]="dashboardSettings.displayOptions.showSidebar" (change)="toggleSidebar()">
-  </div>
-</div>
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="mt-5">
+      <div class="mb-3">
+        <h2>Dashboard Settings</h2>
+        <h3><i><b>Black List</b></i></h3>
+        <div class="row mb-3">
+          <div>
+            <div class="table-wrapper">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Telephone Number</th>
+                    <th scope="col">CIn</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of users">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.location }}</td>
+                    <td>{{ user.tel }}</td>
+                    <td>{{ user.cin }}</td>
+                    <td><button class="btn btn-warning" (click)="unbanUser(user.id)">UnBan</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -26,6 +26,8 @@ export class ChartsComponent implements OnInit {
         // Format data for histogram
         this.chartData = [
           { name: 'Resolved', value: data.total_resolved },
+          { name: 'Assigned', value: data.total_assigned },
+          { name: 'Reported', value: data.total_reported },
           { name: 'In Progress', value: data.total_in_progress }
         ];
       },

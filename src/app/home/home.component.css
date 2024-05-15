@@ -25,6 +25,182 @@ padding-left: 5%;
 }
 
 .page-wrapper {
-  height: 90vh; /* Set the height of the page wrapper to 100% of the viewport height */
+  height:90vh;
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #aaa;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.status-yellow {
+  background-color: rgb(253, 253, 140);
+}
+
+.status-green {
+  background-color: rgb(146, 245, 146);
+}
+
+.status-red {
+  background-color: rgb(111, 164, 194);
+}
+.status-model {
+  display: flex;
+  align-items: center;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stage-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage-icon.completed {
+  background-color: green;
+}
+
+.stage-label {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+/* Arrow */
+.timeline-item-arrow {
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+  border-left: 2px solid #ccc;
+  position: relative;
+}
+
+.timeline-item-arrow::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -8px;
+  border: 8px solid transparent;
+  border-right-color: yellow; /* Adjust color as needed */
+}
+
+.timeline-item-arrow.completed {
+  border-left-color: green; /* Adjust color as needed */
+}
+
+/* Checkmark */
+.timeline-item-checkmark {
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid green; /* Adjust color as needed */
+  border-radius: 50%;
+}
+
+.timeline-item-checkmark.completed {
+  background-color: green; /* Adjust color as needed */
+}
+
+/* Check icon */
+.timeline-item-checkmark::before {
+  content: '\2713'; /* Unicode checkmark character */
+  font-size: 12px; /* Adjust size as needed */
+  color: white; /* Color of the checkmark */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.timeline-container {
+  display: flex;
+}
+
+/* Incident Image */
+.incident-image {
+  max-width: 300px; /* Adjust as needed */
+  margin-right: 200px; /* Add spacing between image and timeline */
+}
+
+
+/* Timeline */
+.timeline {
+  position: relative;
+}
+
+.timeline:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #007bff;
+  left: 50%;
+  margin-left: -1px;
+}
+
+.timeline-item {
+  margin-bottom: 50px;
+}
+
+.timeline-item-content {
+  position: relative;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-left: 50px;
+}
+
+.timeline-item-checkmark {
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid green;
+  border-radius: 50%;
+}
+
+.timeline-item-checkmark.completed {
+  background-color: green;
+}
+
+
+
+.Updatemodal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+  background-color: #fefefe;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+

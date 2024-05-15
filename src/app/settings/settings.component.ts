@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ThemeService } from '../services/theme/theme.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-settings',
@@ -7,35 +9,56 @@ import { ThemeService } from '../services/theme/theme.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
-  dashboardSettings: any = {
-    theme: 'light', // Default theme
-    notifications: true, // Whether notifications are enabled
-    displayOptions: {
-      showGrid: true, // Whether to display a grid layout
-      showSidebar: true // Whether to display a sidebar
-    }
-  };
+  users: any[] = [];
+  noClientsFound: boolean = false;
+  token: string = ''; 
+  searchParams: any = {}; 
+  fireUserId: string = '';
+  @ViewChild('myModal') modal!: ElementRef;
+  @ViewChild('toastContainer') toastContainer!: ElementRef;
+  
+  constructor(
+    private http: HttpClient,
+    private renderer: Renderer2,
+    private toastr: ToastrService
+  ) { }
 
-  constructor(private themeService: ThemeService) {}
-
-  updateTheme(event: any): void {
-    const theme = event.target.value;
-    this.dashboardSettings.theme = theme;
-    this.themeService.setTheme(theme);
+  ngOnInit(): void {
+    this.getBlackList(); // Fetch users when component initializes
   }
-
-  toggleNotifications(): void {
-    this.dashboardSettings.notifications = !this.dashboardSettings.notifications;
-    // You can add logic to handle notifications here
+  getBlackList(): void {
+    const headers = new HttpHeaders({
+      'Authorization': `${this.token}` // Include JWT token in request header
+    });
+  
+    this.http.get<any[]>('http://localhost:3000/auth/Blacklist', { headers }).subscribe(
+      (data) => {
+        this.users = data;
+        console.log('Blacklist:', this.users);
+      },
+      (error) => {
+        console.error('Error retrieving blacklist:', error);
+        this.toastr.error('Error retrieving blacklist', 'Error');
+      }
+    );
   }
-
-  toggleGrid(): void {
-    this.dashboardSettings.displayOptions.showGrid = !this.dashboardSettings.displayOptions.showGrid;
-    // You can add logic to handle grid visibility here
-  }
-
-  toggleSidebar(): void {
-    this.dashboardSettings.displayOptions.showSidebar = !this.dashboardSettings.displayOptions.showSidebar;
-    // You can add logic to handle sidebar visibility here
-  }
+  
+  // Function to unban a user
+  unbanUser(userId: string): void {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}` // Include JWT token in request header
+    });
+  
+    this.http.put(`http://localhost:3000/auth/unban/${userId}`, {}, { headers }).subscribe(
+      () => {
+        this.toastr.success('User unbanned successfully', 'Success');
+        // Optionally, you can update the blacklist after unbanning
+        this.getBlackList();
+      },
+      (error) => {
+        console.error('Error unbanning user:', error);
+        this.toastr.error('Error unbanning user', 'Error');
+      }
+    );
+}
 }

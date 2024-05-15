@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UsersComponent implements OnInit {
   users: any[] = [];
+  noClientsFound: boolean = false;
   token: string = ''; // Variable to store JWT token
   searchParams: any = {}; // Object to store search parameters
   fireUserId: string = ''; // Variable to store the ID of the user to be fired
@@ -52,43 +53,49 @@ export class UsersComponent implements OnInit {
 
 
   // Search users based on provided parameters
-  searchUsers(): void {
+   searchUsers(): void {
     const headers = new HttpHeaders({
         'Authorization': `Bearer ${this.token}` // Include JWT token in request header
     });
-
+  
     let queryParams: any = {};
-
+  
     if (this.searchParams.username) {
         queryParams.username = this.searchParams.username;
     }
-
+  
     if (this.searchParams.tel) {
         queryParams.tel = this.searchParams.tel;
     }
-
+  
     if (this.searchParams.location) {
         queryParams.location = this.searchParams.location;
     }
-
+  
     if (this.searchParams.cin) {
         queryParams.cin = this.searchParams.cin;
     }
-
-    console.log('queryParams:', queryParams); // Add this line to log the queryParams object
-
-    this.http.get<any[]>('http://localhost:3000/auth/search-Tech', {
-        headers,
-        params: queryParams // Pass search parameters as query params
+  
+    console.log('queryParams:', queryParams); // Log the queryParams object
+  
+    this.http.get<any>('http://localhost:3000/auth/search-Tech', {
+      headers,
+      params: queryParams // Pass search parameters as query params
     }).subscribe(
-        (data) => {
-            this.users = data;
-            console.log('Search results:', data); // Log the search results
-        },
-        (error) => {
-            console.error('Error searching users:', error);
-            this.toastr.error('Error searching users', 'error');
-        }
+      (response) => {
+          if (response.noClientsFound) {
+              console.log('No technicians found');
+              this.noClientsFound = true;
+              this.users = []; // Reset the users array
+          } else {
+              this.users = response.rows;
+              console.log('Search results:', this.users); // Log the search results
+          }
+      },
+      (error) => {
+          console.error('Error searching users:', error);
+          this.toastr.error('Error searching users', 'Error');
+      }
     );
   }
 
@@ -103,7 +110,7 @@ export class UsersComponent implements OnInit {
 
   fireUser(): void {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}` // Include JWT token in request header
+      'Authorization': `${this.token}` // Include JWT token in request header
     });
 
     this.http.delete(`http://localhost:3000/auth/users/${this.fireUserId}`, { headers }).subscribe(
@@ -142,17 +149,16 @@ export class UsersComponent implements OnInit {
 
   updateUser(): void {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}` // Include JWT token in request header
+      'Authorization': `${this.token}` // Include JWT token in request header
     });
 
     this.http.put(`http://localhost:3000/auth/users/${this.updatedUser.id}`, this.updatedUser, { headers }).subscribe(
       () => {
         this.toastr.success('User updated successfully', 'success');
-        // Optionally, you can update the user list after updating
         this.fetchUsers();
       },
       (error) => {
-        console.error('Error updating user:', error);
+        console.error('Error updating user:', error); 
         this.toastr.error('Error updating user', 'error');
       }
     );

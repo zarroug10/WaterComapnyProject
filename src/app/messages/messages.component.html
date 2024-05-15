@@ -1,6 +1,6 @@
 <div class="page-wrapper">
-<div class="container mt-5">
-  <!-- Incident Reports Section -->
+  <!-- <div class="container mt-5">
+   Incident Reports Section 
   <div class="row mb-5 justify-content-center">
     <div class="col-lg-5 border-end pe-4">
       <h2 class="mb-4">Incident Reports</h2>
@@ -21,7 +21,7 @@
             <div class="accordion-content mt-3">
               <p>{{ incident.description }}</p>
               <p>{{ incident.location }}</p>
-              <!-- Display media -->
+               Display media
               <div *ngIf="incident.media">
                 <img *ngIf="isImage(incident.media)" [src]="getMediaUrl(incident.media)" alt="Incident Media" style="width: 80%;">
                 <video *ngIf="isVideo(incident.media)" controls style="width: 80%;">
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="col-lg-5 ps-4">
-      <!-- Repair Reports Section -->
+Repair Reports Section 
       <h2 class="mb-4">Repair Reports</h2>
       <div class="accordion mt-4" id="repairAccordion">
         <div class="accordion-item" *ngFor="let report of repairReports">
@@ -54,24 +54,112 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+  <!-- 
+<div class="container-fluid overflow-x-auto justify-content-center">
+  <section class="text-gray-600 body-font">
+      <div class="container px-5 py-24">
+          <div class="row justify-content-between">
+              <div class="col-md-6">
+                  <h1 class="text-xl font-semibold p-6 pl-0 pr-4 italic text-black">Liste des évènements</h1>
+              </div>
+              <div class="col-md-6">
+                  <div class="d-flex justify-content-end">
+                      <button class="mt-6 font-semibold text-xs relative group overflow-hidden px-4 h-8 rounded-full flex items-center border border-success bg-success hover:bg-success-500 text-white" type="button" >
+                          Ajouter un évènement
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <table class="table table-striped mt-6">
+              <thead>
+                  <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Photo</th>
+                      <th scope="col">Titre</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Lieu</th>
+                      <th scope="col">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let incident of incidents">
+                  <td>{{ incident.id }}</td>
+                  <td>
+                      <img *ngIf="isImage(incident.media)" [src]="getMediaUrl(incident.media)" alt="Incident Media" style="max-width: 200px;">
+                      <video *ngIf="isVideo(incident.media)" controls style="max-width: 200px;">
+                          <source [src]="getMediaUrl(incident.media)" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                  </td>
+                      <td>{{ incident.title }}</td>
+                      <td>{{ incident.description }}</td>
+                      <td>{{ incident.location }}</td>
+                      <td>
+                          <div class="d-flex justify-content-end">
+                            <button #assignButton id="assignButton" class="btn btn-primary" (click)="openModal(incident.id)"><strong>Assign</strong></button>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </section>
 </div>
 
-<!-- The modal -->
-<div #myModal id="myModal" class="modal">
-  <div class="modal-content">
-    <span #close class="close" (click)="closeModal()">&times;</span>
-    <h2>Assign Task</h2>
-    <form (submit)="assignTask()">
-      <label for="assignee">Assign:</label>
-      <select class="form-select" id="assignee" name="assignee" [(ngModel)]="assignee" (change)="onTeamSelectionChange($event)">
-        <option value="">Select a Team</option>
-        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
-      </select>
-      <span class="col-md-2"></span>
-      <button class="btn btn-primary" id="assignedButton" type="submit">Assign</button>
-    </form>
+</div> -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="mt-5">
+        <div class="mb-3 d-flex">
+          <div class="notifications-container" style="width: 30%;">
+            <h2 class="mb-4">Notifications</h2>
+            <ul class="card" *ngFor="let report of repairReports"
+              style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <li (click)="openMessage(report)">
+                <i class="fa-solid fa-user" style="width: fit-content; height: 20px; margin-right: 10px;"></i>
+                <span>Report from
+                  {{report.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <small>{{ formatDate(report.created_at) }}</small>
+              </li>
+            </ul>
+          </div>
+          <div class="text-content-container" style="flex: 1;">
+            <!-- Your text content here -->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
 
+  <!-- Notification Modal -->
+  <div #Notification id="Notification" class="UpdateModal">
+    <div class="modal-content">
+      <span id="closeUpdate" class="close" (click)="closeMessage()">&times;</span>
+      <div class="mb-3">
+        <h3>{{ selectedNotification.username }} <small>{{ formatDate(selectedNotification.Date) }}</small></h3>
+        <p>{{ selectedNotification.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifcation Model -->
+  <!-- The modal -->
+  <div #myModal id="myModal" class="modal">
+    <div class="modal-content">
+      <span #close class="close" (click)="closeModal()">&times;</span>
+      <h2>Assign Task</h2>
+      <form (submit)="assignTask()">
+        <label for="assignee">Assign:</label>
+        <select class="form-select" id="assignee" name="assignee" [(ngModel)]="assignee"
+          (change)="onTeamSelectionChange($event)">
+          <option value="">Select a Team</option>
+          <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+        </select>
+        <span class="col-md-2"></span>
+        <button class="btn btn-primary" id="assignedButton" type="submit">Assign</button>
+      </form>
+    </div>
+  </div>

@@ -15,6 +15,7 @@ export class MessagesComponent implements AfterViewInit {
   repairReports: any[] = [];
   teams: {id:string, name: string, members: { username: string }[] }[] = [];
   selectedIncidentId: number | null = null; // Default value is null
+  selectedNotification: any = {};
 incident: any = {
     title: '',
     description: '',
@@ -25,6 +26,7 @@ incident: any = {
   };
 
   @ViewChild('myModal') modal!: ElementRef;
+  @ViewChild('Notification') Notification!: ElementRef;
 
   constructor(private http: HttpClient, private renderer: Renderer2) { }
 
@@ -87,6 +89,25 @@ incident: any = {
         // Handle error
       }
     );
+  }
+
+  
+  openMessage(report: any): void {
+    // Populate the modal with notification details
+    this.selectedNotification = {
+      id: report.id,
+      username: report.username,
+      Date: report.created_at,
+      description: report.description,
+      duration: report.duration,
+    };
+
+    // Open the notification modal
+    this.Notification.nativeElement.style.display = 'block';
+  }
+
+  closeMessage(): void {
+    this.Notification.nativeElement.style.display = 'none';
   }
 
   // Fetch username associated with userId
@@ -205,6 +226,34 @@ fetchTeamById(teamId: number): Observable<any> {
   return this.http.get<any>(`http://localhost:3003/auth/Teams/${teamId}`, { headers });
 }
 
+formatDate(date: string): string {
+  const formattedDate = new Date(date);
+  const currentDate = new Date();
+  const diffInMs = Math.abs(currentDate.getTime() - formattedDate.getTime());
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'just now';
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes} ${diffInMinutes === 1 ? 'minute' : 'minutes'} ago`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+
+  if (diffInHours < 24) {
+    return `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  return `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
+}
+
+
 onTeamSelectionChange(event: any): void {
   const teamId = event.target.value;
   if (teamId) {
@@ -223,8 +272,6 @@ onTeamSelectionChange(event: any): void {
     }
   }
 }
-
-
 
 
 }

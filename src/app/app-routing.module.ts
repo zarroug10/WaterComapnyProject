@@ -12,6 +12,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './services/AuthGuard/auth-guard.service'; // Import the AuthGuard
 import { MyMapComponent } from './my-map/my-map.component'; // Import MyMapComponent
 import { LocationChartComponent } from './location-chart/location-chart.component';
+import { ClientsComponent } from './clients/clients.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Default route redirects to login
@@ -21,13 +22,14 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard], // Add AuthGuard here
+    canActivate: [AuthGuard], 
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent, children: [
         { path: 'mymap', component: MyMapComponent } // Add MyMapComponent as a child route
       ] },
       { path: 'users', component: UsersComponent },
+      { path: 'clients', component: ClientsComponent },
       { path: 'charts', component: LocationChartComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'settings', component: SettingsComponent },

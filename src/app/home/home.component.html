@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <div class="page-wrapper">
 <div class="row mb-5"></div>
 <div class="container-fluid">
@@ -27,57 +32,80 @@
       </div>
     </div>
   </div>
-  <!-- Last Interactions Section -->
   <div class="row mb-3">
-    <div class="col-md-6">
+    <div >
       <div class="table-wrapper">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Location</th>
-                <th scope="col">User Type</th>
-                <th scope="col">Telephone</th>
-                <th scope="col">CIN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of users">
-                <td>{{ user.username }}</td>
-                <td>{{ user.location }}</td>
-                <td>{{ user.userType }}</td>
-                <td>{{ user.tel }}</td>
-                <td>{{ user.cin }}</td>
-              </tr>
-            </tbody>
-          </table>
-      </div>
-        </div>
-    <div class="col-md-1"></div>
-  <!-- Clients Feedback Section -->
-    <div class="col-md-4">
-      <div class="row">
         <table class="table table-hover">
-          <caption>feedbacks</caption>
           <thead>
             <tr>
-              <th scope="col">Client</th>
-              <th scope="col">Message</th>
-              <th scope="col">incidentTitle</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+              <th scope="col">Team Name</th>
+              <th scope="col">Reported By</th>
+              <th scope="col">Details</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let feedback of feedbacks">
-              <td>{{feedback.username}}</td>
-              <td>{{feedback.message}}</td>
-              <td>{{feedback.incidentTitle}}</td>
+            <tr *ngFor="let incident of incidents">
+              <td>{{ incident.title }}</td>
+              <td>{{ incident.description }}</td> 
+              <td style="letter-spacing: 2px;" [style.background-color]="getStatusColor(incident.status)" [style.color]="getStatustextColor(incident.status)"><i><strong>{{ incident.status }}</strong></i></td>
+              <td>{{ incident.team_name }}</td>
+              <td>{{ incident.username }}</td>
+              <td><button (click)="openTimeModal(incident)">View Details</button></td>
             </tr>
           </tbody>
-              </table>
+        </table>
       </div>
-      <!-- Repeat for other Client Feedback -->
+        </div>
+</div>
+
+<!-- Update Model -->
+<div #TimeModal id="TimeModal" class="Updatemodal">
+  <div class="modal-content" style="background-color: aquamarine;" >
+    <span #closeUpdate class="close" (click)="closeTimeModal()">&times;</span>
+    <h4 class="modal-title" style="text-align: center; margin-top: 3%; background-color: aquamarine;"><strong>{{ Incident.title }}</strong></h4>
+  </div>
+  <!-- Modal Body -->
+  <div class="modal-body">
+    <div class="timeline-container">
+      <img [src]="getMediaUrl(Incident.media)" alt="Incident Media" class="incident-image">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-item-content" >
+            <div class="timeline-item-text">Reported</div>
+            <div class="timeline-item-arrow" *ngIf="getCompletedStages(Incident.status).currentStage === 0"></div>
+            <div class="timeline-item-checkmark" [class.completed]="getCompletedStages(Incident.status).completed[0]"></div>
+        </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-item-content">
+            <div class="timeline-item-text">Assigned</div>
+            <div class="timeline-item-arrow" *ngIf="getCompletedStages(Incident.status).currentStage === 1"></div>
+            <div class="timeline-item-checkmark" [class.completed]="getCompletedStages(Incident.status).completed[1]"></div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-item-content">
+            <div class="timeline-item-text">In Progress</div>
+            <div class="timeline-item-arrow" *ngIf="getCompletedStages(Incident.status).currentStage === 2"></div>
+            <div class="timeline-item-checkmark" [class.completed]="getCompletedStages(Incident.status).completed[2]"></div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-item-content">
+            <div class="timeline-item-text">Resolved</div>
+            <div class="timeline-item-arrow" *ngIf="getCompletedStages(Incident.status).currentStage === 3"></div>
+            <div class="timeline-item-checkmark" [class.completed]="getCompletedStages(Incident.status).completed[3]"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 </div>
-</div>
+
+                     
+<!-- Update Model -->
+
+<div class="toast-container" id="toast-container"></div>

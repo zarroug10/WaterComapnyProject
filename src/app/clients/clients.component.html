@@ -1,0 +1,87 @@
+<div class="page-wrapper">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="mt-5">
+          <div class="mb-3">
+      <h2>Search Clients</h2>
+      <div class="row g-3">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Username" [(ngModel)]="searchParams.username" name="username">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Telephone" [(ngModel)]="searchParams.tel" name="telephone">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="CIN" [(ngModel)]="searchParams.cin" name="cin">
+        </div>
+        <div class="col">
+          <select type="text"  class="form-select" [(ngModel)]="searchParams.location" name="location">
+            <option value="">Select Location</option>
+            <option value="nafta">Nafta</option>
+            <option value="Zawya">Zaway</option>
+            <option value="tunis">Tunis</option>
+          </select>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary w-100" (click)="searchUsers()"><i class="fa-brands fa-searchengin"></i>Search</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2>Users</h2>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Location</th>
+                <th>CIN</th>
+                <th>Telephone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.location }}</td>
+                <td>{{ user.cin }}</td>
+                <td>{{ user.tel }}</td>
+                <td>
+                  <button type="button" class="btn btn-secondary mr-1" (click)="openModal(user.id)" data-target="#confirmFireModal">
+                    <i class="fa-solid fa-ban"></i> Ban
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <!-- Delete Model -->
+    <div #myModal id="myModal" class="modal">
+      <div class="modal-content">
+        <span #close class="close" (click)="closeModal()">&times;</span>
+        <h2>Are you sure you want to Ban this Client?</h2>
+        <form>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+          <button class="btn btn-secondary" type="button" (click)="closeModal()">Cancel</button>
+          &nbsp;&nbsp;&nbsp;
+          <button class="btn btn-danger" type="button" (click)="fireUser()" *ngIf="fireUserId">Fire</button>
+        </form>
+      </div>
+    </div>
+    <!-- Delete Model -->
+    
+    <div class="toast-container" id="toast-container"></div>
+    
+    
+    

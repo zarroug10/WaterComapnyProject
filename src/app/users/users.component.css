@@ -75,6 +75,6 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .page-wrapper {
-  height: 90vh; /* Set the height of the page wrapper to 100% of the viewport height */
+  height:90vh;
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }

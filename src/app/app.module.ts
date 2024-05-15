@@ -24,6 +24,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MyMapComponent } from './my-map/my-map.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LocationChartComponent } from './location-chart/location-chart.component';
+import { ChartModule } from 'angular-highcharts';
+import { ClientsComponent } from './clients/clients.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { LocationChartComponent } from './location-chart/location-chart.componen
     MessagesComponent,
     SettingsComponent,
     MyMapComponent,
-    LocationChartComponent
+    LocationChartComponent,
+    ClientsComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { LocationChartComponent } from './location-chart/location-chart.componen
     ToastrModule.forRoot({
       positionClass:'toast-top-right',
       toastClass: 'ngx-toastr',  }),
+      ChartModule ,
   ],
   providers: [
     AuthGuard, // Provide the AuthGuard
