@@ -14,17 +14,16 @@ pipeline {
                 checkout scm
             }
         }
-         stage('Build') {
+        stage('Build') {
             steps {
-                sh 'npm build'
+                sh 'npm run build'
             }
         }
-
         stage('Install dependencies') {
-          steps {
-    sh '${NODEJS_HOME}/bin/npm install --force'
-        }
+            steps {
+                sh '${env.NODEJS_HOME}/bin/npm install --force'
             }
+        }
         stage('Build Docker image') {
             steps {
                 sh 'docker build -t dashboard:latest -f Dockerfile .'
@@ -32,13 +31,12 @@ pipeline {
                 sh 'docker tag dashboard:latest zarroug/dashboard:latest'
             }
         }
-
         stage('Deploy Docker image') {
             steps {
                 script {
                     // Push Docker image to Docker Hub
-                    withCredentials([string(credentialsId: 'token', variable: 'DOCKER_TOKEN')]) {
-                        docker.withRegistry('https://index.docker.io/v1/', '12') {
+                    withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-token') {
                             // Push both the latest and tagged images
                             docker.image('zarroug/dashboard:latest').push('latest')
                         }
@@ -53,7 +51,6 @@ pipeline {
             echo 'Build succeeded!'
             // Add any success post-build actions here
         }
-
         failure {
             echo 'Build failed!'
             // Add any failure post-build actions here
