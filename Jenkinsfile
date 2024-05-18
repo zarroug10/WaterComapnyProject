@@ -17,11 +17,11 @@ pipeline {
        
         stage('Install dependencies') {
             steps {
-                sh '${env.NODEJS_HOME}/bin/npm install --force'
+                sh "${env.NODEJS_HOME}/bin/npm install --force"
             }
         }
-        
-         stage('Build') {
+       
+        stage('Build') {
             steps {
                 sh 'npm run build'
             }
