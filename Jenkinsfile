@@ -17,20 +17,20 @@ pipeline {
        
         stage('Install dependencies') {
             steps {
-                bat "npm install --force"
+                powershell "npm install --force"
             }
         }
        
         stage('Build') {
             steps {
-                bat 'npm run build'
+                powershell "npm run build"
             }
         }
         stage('Build Docker image') {
             steps {
-                bat 'docker build -t dashboard:latest -f Dockerfile .'
+                powershell "docker build -t dashboard:latest -f Dockerfile ."
                 // Tag the Docker image with a version
-                bat 'docker tag dashboard:latest zarroug/dashboard:latest'
+                powershell "docker tag dashboard:latest zarroug/dashboard:latest"
             }
         }
         stage('Deploy Docker image') {
@@ -40,7 +40,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
                         docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-token') {
                             // Push both the latest and tagged images
-                            docker.image('zarroug/dashboard:latest').push('latest')
+                            powershell "docker image push zarroug/dashboard:latest"
                         }
                     }
                 }
