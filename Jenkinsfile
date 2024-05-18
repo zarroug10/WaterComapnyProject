@@ -14,11 +14,16 @@ pipeline {
                 checkout scm
             }
         }
+         stage('Build') {
+            steps {
+                sh 'npm build'
+            }
+        }
 
         stage('Install dependencies') {
           steps {
     sh '${NODEJS_HOME}/bin/npm install'
-}
+        }
             }
         stage('Build Docker image') {
             steps {
