@@ -38,7 +38,7 @@ pipeline {
                 script {
                     // Push Docker image to Docker Hub
                     withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
-                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-token') {
+                        docker.withRegistry('https://index.docker.io/v1/', '12') {
                             // Push both the latest and tagged images
                             powershell "docker image push zarroug/dashboard:latest"
                         }
