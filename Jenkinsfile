@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeJS 14.17.0', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        NODEJS_HOME = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         PATH = "${env.NODEJS_HOME}\\bin;${env.PATH}"
         CHROME_BIN = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
         DOCKER_HUB_REGISTRY = 'docker.io'
