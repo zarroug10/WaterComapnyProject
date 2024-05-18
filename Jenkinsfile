@@ -22,7 +22,7 @@ pipeline {
 
         stage('Install dependencies') {
           steps {
-    sh '${NODEJS_HOME}/bin/npm install'
+    sh '${NODEJS_HOME}/bin/npm install --force'
         }
             }
         stage('Build Docker image') {
