@@ -26,6 +26,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LocationChartComponent } from './location-chart/location-chart.component';
 import { ChartModule } from 'angular-highcharts';
 import { ClientsComponent } from './clients/clients.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ClientsComponent } from './clients/clients.component';
     HttpClientModule,
     BrowserAnimationsModule,
     NgxChartsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass:'toast-top-right',
       toastClass: 'ngx-toastr',  }),

@@ -1,9 +1,35 @@
 <app-header></app-header>
 <app-sidebar></app-sidebar>
 <router-outlet></router-outlet>
+
 <!-- Floating Button -->
 <div class="floating-button btn-lg">
-  <a class="btn btn-primary btn-floating">
+  <a class="btn btn-primary btn-floating" (click)="showModal()">
     <i class="fa-regular fa-message"></i>
   </a>
+</div>
+
+<!-- Modal for sending message -->
+<div #messageModal class="modal fade" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="messageModalLabel">Send Message</h3>
+        <span class="close" (click)="hideModal()" aria-label="Close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+          <div class="form-group">
+            <label for="messageContent">Message Content</label>
+            <input type="text" id="messageContent" formControlName="messageContent" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" formControlName="location" class="form-control" />
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="messageForm.invalid">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

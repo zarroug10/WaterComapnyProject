@@ -109,41 +109,63 @@ Repair Reports Section
 </div>
 
 </div> -->
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="mt-5">
-        <div class="mb-3 d-flex">
-          <div class="notifications-container" style="width: 30%;">
-            <h2 class="mb-4">Notifications</h2>
-            <ul class="card" *ngFor="let report of repairReports"
-              style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-              <li (click)="openMessage(report)">
-                <i class="fa-solid fa-user" style="width: fit-content; height: 20px; margin-right: 10px;"></i>
-                <span>Report from
-                  {{report.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <small>{{ formatDate(report.created_at) }}</small>
-              </li>
-            </ul>
-          </div>
-          <div class="text-content-container" style="flex: 1;">
-            <!-- Your text content here -->
-          </div>
+
+<div class="container">
+  <div class="row">
+    <!-- Notifications Section (40% width) -->
+    <div class="col-lg-4">
+      <div class="notifications-container mt-5">
+        <h2 class="mb-4">Notifications</h2>
+        <ul class="card" *ngFor="let report of repairReports" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+          <li >
+            <i class="fa-solid fa-user" style="width: fit-content; height: 20px; margin-right: 10px;"></i>
+            <span (click)="openMessage(report)">Report from {{ report.username }}</span>
+            <small class="report-info">{{ formatDate(report.created_at) }}</small>
+            <button class="btn-delete" (click)="deleteRepairReport(report.id)" style="border: none; border-radius: 50%; width: 30px; height: 30px; padding: 0;">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+
+    <!-- Divider Line -->
+    <div class="col-lg-1">
+      <div class="divider"></div>
+    </div>
+
+    <!-- Teams Section (60% width) -->
+    <div class="col-lg-7">
+      <h1 class="mt-5"><strong>Teams</strong></h1>
+      <div *ngFor="let team of teams" class="team-container mt-3 card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div class="card-body">
+          <table>
+          <th ><h3 class="card-title"><strong>{{ team.name }}</strong></h3></th>
+          <th  class="report-info" [style.background-color]="getStatusColor(team.status)" [style.color]="getStatustextColor(team.status)">{{team.status}}</th>
+        </table>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let member of team.members">{{ member.username }}</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-
-  <!-- Notification Modal -->
-  <div #Notification id="Notification" class="UpdateModal">
-    <div class="modal-content">
-      <span id="closeUpdate" class="close" (click)="closeMessage()">&times;</span>
-      <div class="mb-3">
-        <h3>{{ selectedNotification.username }} <small>{{ formatDate(selectedNotification.Date) }}</small></h3>
-        <p>{{ selectedNotification.description }}</p>
-      </div>
+<!-- Notification Modal -->
+<div #Notification id="Notification" class="UpdateModal">
+  <div class="modal-content">
+    <span id="closeUpdate" class="close" (click)="closeMessage()">&times;</span>
+    <div class="mb-3">
+      <h3>{{ selectedNotification.username }} <small>{{ formatDate(selectedNotification.Date) }}</small></h3>
+      <p>{{ selectedNotification.description }}</p> <b>duration</b> {{ selectedNotification.duration }}
     </div>
   </div>
+</div>
+
+
+
 
   <!-- Notifcation Model -->
   <!-- The modal -->

@@ -10,14 +10,14 @@ import { ToastrService } from 'ngx-toastr';
 export class UsersComponent implements OnInit {
   users: any[] = [];
   noClientsFound: boolean = false;
-  token: string = ''; // Variable to store JWT token
-  searchParams: any = {}; // Object to store search parameters
-  fireUserId: string = ''; // Variable to store the ID of the user to be fired
-  updatedUser: any = {}; // Object to store updated user information
-  newUser: any = { userType: 'technician' }; // Object to store new user information with userType set to 'technician'
+  token: string = ''; 
+  searchParams: any = {}; 
+  fireUserId: string = ''; 
+  updatedUser: any = {}; 
+  newUser: any = { userType: 'technician' }; 
   @ViewChild('addEmployeeModal') addEmployeeModal!: ElementRef;
   @ViewChild('myModal') modal!: ElementRef;
-  @ViewChild('updateModal') updateModal!: ElementRef; // Add reference to the update modal
+  @ViewChild('updateModal') updateModal!: ElementRef; 
   @ViewChild('toastContainer') toastContainer!: ElementRef;
 
   constructor(
@@ -86,10 +86,10 @@ export class UsersComponent implements OnInit {
           if (response.noClientsFound) {
               console.log('No technicians found');
               this.noClientsFound = true;
-              this.users = []; // Reset the users array
+              this.users = []; 
           } else {
               this.users = response.rows;
-              console.log('Search results:', this.users); // Log the search results
+              console.log('Search results:', this.users); 
           }
       },
       (error) => {
@@ -116,7 +116,6 @@ export class UsersComponent implements OnInit {
     this.http.delete(`http://localhost:3000/auth/users/${this.fireUserId}`, { headers }).subscribe(
       () => {
         this.toastr.success('User deleted successfully', 'success');
-        // Optionally, you can update the user list after deletion
         this.fetchUsers();
       },
       (error) => {

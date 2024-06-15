@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +13,15 @@ export class DashboardComponent implements OnInit {
   baseUrl = 'http://localhost:3001/uploads/';
   token: string = ''; // Variable to store JWT token
   searchParams: any = {}; // Object to store search parameters
+  messageForm: FormGroup;
+  @ViewChild('messageModal') messageModal!: ElementRef;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private fb: FormBuilder, private renderer: Renderer2) { 
+    this.messageForm = this.fb.group({
+      messageContent: ['', Validators.required],
+      location: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.fetchIncidents();
@@ -54,39 +62,43 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // // Search users based on provided parameters
-  // searchUsers(): void {
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${this.token}` // Include JWT token in request header
-  //   });
+  // Show the modal
+  showModal(): void {
+    this.renderer.setStyle(this.messageModal.nativeElement, 'display', 'block');
+    this.renderer.addClass(this.messageModal.nativeElement, 'show');
+  }
 
-  //   let queryParams: any = {};
+  // Hide the modal
+  hideModal(): void {
+    this.renderer.setStyle(this.messageModal.nativeElement, 'display', 'none');
+    this.renderer.removeClass(this.messageModal.nativeElement, 'show');
+  }
 
-  //   if (this.searchParams.username) {
-  //     queryParams.username = this.searchParams.username;
-  //   }
+  // Send message to backend
+  sendMessage(): void {
+    if (this.messageForm.invalid) {
+      return;
+    }
 
-  //   if (this.searchParams.tel) {
-  //     queryParams.tel = this.searchParams.tel;
-  //   }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`, // Include JWT token in request header
+      'Content-Type': 'application/json'
+    });
 
-  //   if (this.searchParams.location) {
-  //     queryParams.location = this.searchParams.location;
-  //   }
+    const messageData = this.messageForm.value;
 
-  //   this.http.get<any[]>('http://localhost:3000/auth/search', {
-  //     headers,
-  //     params: queryParams // Pass search parameters as query params
-  //   }).subscribe(
-  //     (data) => {
-  //       this.users = data;
-  //     },
-  //     (error) => {
-  //       console.error('Error searching users:', error);
-  //       // Handle error
-  //     }
-  //   );
-  // }
+    this.http.post('http://localhost:3004/send', messageData, { headers }).subscribe(
+      (response: any) => {
+        console.log('Message sent successfully:', response);
+        // Handle success (e.g., show a success message, clear the form, etc.)
+        this.hideModal();
+      },
+      (error) => {
+        console.error('Error sending message:', error);
+        // Handle error
+      }
+    );
+  }
 
   // Check if media is an image
   isImage(media: string): boolean {

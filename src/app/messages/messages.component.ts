@@ -1,19 +1,20 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css']
 })
-export class MessagesComponent implements AfterViewInit {
+export class MessagesComponent{
   incidents: any[] = [];
   baseUrl = 'http://localhost:3001/uploads/';
   token: string = ''; // Variable to store JWT token
   assignee: number | null = null;
   repairReports: any[] = [];
-  teams: {id:string, name: string, members: { username: string }[] }[] = [];
+  teams: {id:string, name: string, members: { username: string }[],status:string }[] = [];
   selectedIncidentId: number | null = null; // Default value is null
   selectedNotification: any = {};
 incident: any = {
@@ -27,8 +28,9 @@ incident: any = {
 
   @ViewChild('myModal') modal!: ElementRef;
   @ViewChild('Notification') Notification!: ElementRef;
+  @ViewChild('toastContainer') toastContainer!: ElementRef;
 
-  constructor(private http: HttpClient, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private renderer: Renderer2, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.fetchIncidents();
@@ -36,13 +38,10 @@ incident: any = {
     this.getTeams();
   }
 
-  ngAfterViewInit(): void {
-    this.initAccordion();
-  }
 
   // Fetch teams from backend
   getTeams(): void {
-    this.http.get<{ teams: { id:string,name: string, members: { username: string }[] }[] }>('http://localhost:3003/auth/Teams').subscribe({
+    this.http.get<{ teams: { id:string,name: string, members: { username: string }[],status:string }[] }>('http://localhost:3003/auth/Teams').subscribe({
       next: (response) => {
         this.teams = response.teams;
       },
@@ -125,45 +124,26 @@ incident: any = {
     });
   }
 
-  // Check if media is an image
-  isImage(media: string): boolean {
-    return media.endsWith('.jpg') || media.endsWith('.jpeg') || media.endsWith('.png') || media.endsWith('.gif');
+  getStatustextColor(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'available':
+        return 'rgb(34, 177, 34)';
+      case 'busy':
+        return 'rgb(218, 8, 8)';
+      default:
+        return ''; 
+    }
   }
 
-  isVideo(media: string): boolean {
-    return media.endsWith('.mp4') || media.endsWith('.avi') || media.endsWith('.mov') || media.endsWith('.wmv');
-  }
-
-  getMediaUrl(filename: string): string {
-    return this.baseUrl + filename;
-  }
-
-  private initAccordion(): void {
-    const accordionItems = document.querySelectorAll('.accordion-item');
-
-    accordionItems.forEach((item) => {
-      const button = item.querySelector('.accordion-button');
-      const content = item.querySelector('.accordion-content');
-
-      if (button && content) {
-        button.addEventListener('click', () => {
-          const expanded = button.getAttribute('aria-expanded') === 'true';
-
-          this.renderer.setAttribute(button, 'aria-expanded', String(!expanded));
-          this.renderer.setStyle(content, 'maxHeight', expanded ? null : `${content.scrollHeight}px`);
-        });
-      }
-    });
-  }
-
-  toggleAccordion(event: Event): void {
-    const button = event.target as HTMLElement;
-    const content = button.nextElementSibling as HTMLElement;
-
-    const expanded = button.getAttribute('aria-expanded') === 'true';
-
-    button.setAttribute('aria-expanded', String(!expanded));
-    content.classList.toggle('show');
+  getStatusColor(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'available':
+        return 'rgb(183, 253, 183)';
+      case 'busy':
+        return 'rgb(247, 154, 154)';
+      default:
+        return ''; 
+    }
   }
 
   openModal(incidentId: number): void {
@@ -272,6 +252,23 @@ onTeamSelectionChange(event: any): void {
     }
   }
 }
+deleteRepairReport(reportId: number): void {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.token}`
+  });
 
+  this.http.delete<any>(`http://localhost:3001/repair-reports/${reportId}`, { headers }).subscribe(
+    () => {
+      this.toastr.success('Repair report deleted successfully', 'success');
+      console.log('Repair report deleted successfully');
+      // Remove the deleted report from the repairReports array
+      this.repairReports = this.repairReports.filter(report => report.id !== reportId);
+    },
+    (error) => {
+      console.error('Error deleting repair report:', error);
+      // Handle error, display error message, etc.
+    }
+  );
+}
 
 }

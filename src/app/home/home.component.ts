@@ -53,15 +53,20 @@ export class HomeComponent implements OnInit {
 
 
 
-  // Fetch users from backend
   fetchIncidents(): void {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}` // Include JWT token in request header
     });
-
+  
     this.http.get<any[]>('http://localhost:3001/incidents', { headers }).subscribe(
       (data) => {
-        this.incidents = data;
+        // Process the data to replace null team names with "Not yet assigned"
+        this.incidents = data.map(incident => {
+          if (!incident.team_name) {
+            incident.team_name = 'Not yet assigned';
+          }
+          return incident;
+        });
       },
       (error) => {
         console.error('Error fetching incidents:', error);
@@ -69,6 +74,7 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+  
 
 // Fetch location analytics from backend
   fetchLocationAnalytics(): void {
